@@ -25,7 +25,7 @@ exports.signup = async (req, res) => {
 
     const user = await User.create({
       email,
-      password: hashedPassword, // FIXED
+      password: hashedPassword, 
     });
 
     res.status(200).json({
@@ -40,3 +40,31 @@ exports.signup = async (req, res) => {
     });
   }
 };
+
+
+// login
+
+exports.Login = async (req , res )=>{
+  try {
+    const {email , password} = req.body;
+    if(!email || !password) return res.status(401).json({
+      success : false ,
+      message: "Email and password required"
+    });
+    const user = await User.findOne({email});
+    if(!user) return res.status(401).json({
+      success : false ,
+      message : "Invalid credintials"
+    })
+    const passwordChecked = await bcrypt.compare(password , user.password);
+    if(!passwordChecked) return res.status(400).json({
+      success : false ,
+      message : "Invalid credintials"
+    })
+  } catch (error) {
+    res.status(401).json({
+      success : false ,
+      message : error.message
+    })
+  }
+}

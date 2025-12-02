@@ -1,4 +1,4 @@
-const { default: mongoose, Schema } = require("mongoose");
+const { default: mongoose } = require("mongoose");
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -14,8 +14,14 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  twoFAsecret: {
+  otpCode: {
     type: String,
+    default: null,
+  },
+
+  otpExpires: {
+    type: Date,
+    default: null,
   },
 });
 const User = mongoose.model("user", userSchema);
