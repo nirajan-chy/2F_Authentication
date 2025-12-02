@@ -1,0 +1,9 @@
+
+
+POST http://localhost:7000/user/sign
+Content-Type: application/json
+
+{
+  "email": "alice@example.com",
+  "password": "mypassword123"
+}

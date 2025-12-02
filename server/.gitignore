@@ -1,0 +1,68 @@
+# Node modules
+node_modules/
+
+# Environment files
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build output
+dist/
+build/
+.next/
+out/
+
+# Cache
+.cache/
+.next/cache/
+.vscode/
+*.tsbuildinfo
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Uploads (optional)
+uploads/
+public/uploads/
+
+# Temporary files
+*.tmp
+*.temp
+
+# Coverage
+coverage/
+
+# IDE specific
+.idea/
+.vscode/
+*.swp
+
+# TypeScript
+*.tsbuildinfo
+
+# PM2 logs
+.pids
+*.pid
+*.seed
+*.pid.lock
+
+# Compiled output
+*.exe
+*.dll
+*.class
+
+# Lock files (optional)
+package-lock.json
+yarn.lock
+pnpm-lock.yam

@@ -1,0 +1,11 @@
+const dotenv = require("dotenv");
+dotenv.config();
+const MONGO_URI = process.env.MONGO_URI;
+const PORT = process.env.PORT;
+const secret_key = process.env.SECRET_KEY;
+
+module.exports = {
+  MONGO_URI,
+  PORT,
+  secret_key,
+};
