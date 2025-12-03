@@ -1,28 +1,29 @@
-const { default: mongoose } = require("mongoose");
+const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true
+  },
   email: {
     type: String,
     required: true,
-    unique: true,
+    unique: true
   },
   password: {
     type: String,
-    required: true,
+    required: true
   },
-  is2FAEnable: {
-    type: Boolean,
-    default: false,
+  twoFactorSecret :{
+    type : String
   },
-  otpCode: {
-    type: String,
-    default: null,
-  },
+  is2FAEnabled :{
+    type : Boolean ,
+    default : false 
+  }
+},
+{timestamps : true}
+);
 
-  otpExpires: {
-    type: Date,
-    default: null,
-  },
-});
-const User = mongoose.model("user", userSchema);
+const User = mongoose.model("User", userSchema);
 module.exports = User;

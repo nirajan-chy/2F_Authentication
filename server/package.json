@@ -4,7 +4,7 @@
   "private": true,
   "module": "commonjs",
   "scripts": {
-    "dev": "nodemon` ./bin/www"
+    "dev": "nodemon ./bin/www"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
