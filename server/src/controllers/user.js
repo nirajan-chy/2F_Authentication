@@ -1,7 +1,9 @@
 const bcrypt = require("bcrypt");
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
-const { secret_key } = require("../api/env");
+const speakeasy = require("speakeasy");
+const { secret_key, refresh_key } = require("../api/env");
+const { Suspense } = require("react");
 
 exports.registerUser = async (req, res, next) => {
   try {
@@ -53,14 +55,78 @@ exports.loginUser = async (req, res, next) => {
       throw new Error("Invalid Credentials");
     }
 
-
-    // when 2FA is on 
-
-    const accessToken = jwt.sign({_id : user._id} , secret_key , {expiresIn : "15min"})
-    const refreshToken = jwt.sign({_id : user._id} , )
-
+    // when 2FA is on
+    if (!user.is2FAEnabled) {
+      const accessToken = jwt.sign({ _id: user._id }, secret_key, {
+        expiresIn: "15min",
+      });
+      const refreshToken = jwt.sign({ _id: user._id }, refresh_key, {
+        expiresIn: "10d",
+      });
+      res.status(201).json({
+        success: true,
+        message: "Login successfully (2FA 0ff)",
+        user: user,
+        refreshToken: refreshToken,
+        accessToken: accessToken,
+      });
+    }
+    //2FA on
+    if (!token)
+      return res.status(200).json({
+        success: true,
+        message: "2FA enabled , Please provide OTP",
+      });
+    const verified = speakeasy.totp.verify({
+      secret: user.twoFactorSecret,
+      encoding: "base32",
+      token,
+      window: 1,
+    });
+    if (!verified)
+      return res.status(500).json({
+        success: false,
+        message: "Invalid OTP",
+      });
+    const accessToken = jwt.sign({ _id: user._id }, secret_key, {
+      expiresIn: "15m",
+    });
+    const refreshToken = jwt.sign({ _id: user._id }, refresh_key, {
+      expiresIn: "10d",
+    });
+    res.status(200).json({
+      success: true,
+      message: "login successfully , 2FA is enabled",
+      user: user,
+      accessToken: accessToken,
+      refreshToken: refreshToken,
+    });
   } catch (error) {
     res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+exports.disbled2FA = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+    if (!user)
+      res.status(400).json({
+        success: false,
+        message: "user not found",
+      });
+    user.is2FAEnabled = false;
+    user.twoFactorSecret = null;
+    await user.save();
+    res.status(200).json({
+      success: false,
+      message: "2FA disabled successfully",
+    });
+  } catch (error) {
+    res.status(400).json({
       success: false,
       message: error.message,
     });
