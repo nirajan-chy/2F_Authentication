@@ -1,0 +1,9 @@
+POST http://localhost:7000/code/generate
+Content-Type: application/json
+
+
+
+{
+  "email": "don@gmail.com"
+}
+

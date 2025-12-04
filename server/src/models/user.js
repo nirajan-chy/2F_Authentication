@@ -22,6 +22,10 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    backupCodes :{
+      type : String,
+      default : [],
+    },
   },
   { timestamps: true }
 );

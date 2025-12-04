@@ -3,7 +3,6 @@ const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 const speakeasy = require("speakeasy");
 const { secret_key, refresh_key } = require("../api/env");
-const { Suspense } = require("react");
 
 exports.registerUser = async (req, res, next) => {
   try {
