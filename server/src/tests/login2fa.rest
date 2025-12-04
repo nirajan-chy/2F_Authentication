@@ -1,0 +1,7 @@
+POST http://localhost:7000/2FA/login2fa
+Content-Type:  application/json
+
+{
+  "userId": "693128dbbfed232139f9a99f",
+  "token": "758778"
+}

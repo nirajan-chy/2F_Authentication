@@ -1,0 +1,2 @@
+    GET http://localhost:7000/2FA/setup
+    Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OTMxMzRjNjhiZTdiNDNmZmFjYzRlZjYiLCJpYXQiOjE3NjQ4MzI4MjAsImV4cCI6MTc2NzQyNDgyMH0.4JodQ2bWnYtX_32XP8ciLgloNuI9Gg4n-QBCDE14Wnk

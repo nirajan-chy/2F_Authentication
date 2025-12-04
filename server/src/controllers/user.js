@@ -52,20 +52,13 @@ exports.loginUser = async (req, res, next) => {
     if (!isValidPassword) {
       throw new Error("Invalid Credentials");
     }
-    // generate token
-    const infoObj = {
-      _id: user._id,
-    };
-    const expiryInfo = {
-      expiresIn: "30d",
-    };
-    const token = jwt.sign(infoObj, secret_key, expiryInfo);
-    res.status(200).json({
-      success: true,
-      message: "user logged in successfully",
-      result: user,
-      token: token,
-    });
+
+
+    // when 2FA is on 
+
+    const accessToken = jwt.sign({_id : user._id} , secret_key , {expiresIn : "15min"})
+    const refreshToken = jwt.sign({_id : user._id} , )
+
   } catch (error) {
     res.status(500).json({
       success: false,
