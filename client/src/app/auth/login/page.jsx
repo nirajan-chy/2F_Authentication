@@ -1,0 +1,87 @@
+'use client'
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { useAuth } from '@/context/AuthContext'
+import Input from '@/components/ui/Input'
+import Button from '@/components/ui/Button'
+import Link from 'next/link'
+import { Shield, Mail, Lock } from 'lucide-react'
+
+export default function LoginPage() {
+  const [formData, setFormData] = useState({ email: '', password: '' })
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const { login } = useAuth()
+  const router = useRouter()
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setLoading(true)
+    setError('')
+    
+    try {
+      const result = await login(formData)
+      
+      if (result.requires2FA) {
+        router.push('/verify-2fa')
+      } else {
+        router.push('/dashboard')
+      }
+    } catch (err) {
+      setError(err.message || 'Login failed')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <div className="bg-white rounded-2xl shadow-xl p-8">
+      <div className="text-center mb-8">
+        <div className="inline-block p-3 bg-blue-100 rounded-full mb-4">
+          <Shield className="text-blue-600" size={32} />
+        </div>
+        <h1 className="text-2xl font-bold text-gray-800">Welcome Back</h1>
+        <p className="text-gray-600 mt-2">Sign in to your account</p>
+      </div>
+
+      {error && (
+        <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-lg text-sm">
+          {error}
+        </div>
+      )}
+
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <Input
+          icon={Mail}
+          type="email"
+          placeholder="your@email.com"
+          value={formData.email}
+          onChange={(e) => setFormData({...formData, email: e.target.value})}
+          label="Email"
+          required
+        />
+
+        <Input
+          icon={Lock}
+          type="password"
+          placeholder="••••••••"
+          value={formData.password}
+          onChange={(e) => setFormData({...formData, password: e.target.value})}
+          label="Password"
+          required
+        />
+
+        <Button type="submit" loading={loading} className="w-full">
+          Sign In
+        </Button>
+      </form>
+
+      <p className="text-center mt-6 text-gray-600">
+         have an account?{' '}
+        <Link href="/register" className="text-blue-600 font-medium hover:underline">
+          Sign up
+        </Link>
+      </p>
+    </div>
+  )
+}
